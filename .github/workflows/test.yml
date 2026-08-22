@@ -1,22 +1,44 @@
-name: Test application
+name: Tests
 
 on:
   push:
+    branches: [main, develop, 'feature/**']
   pull_request:
+    branches: [main, develop]
 
 jobs:
   test:
+    timeout-minutes: 60
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Check required files
-        run: |
-          test -f index.html
-          test -f style.css
-          test -f script.js
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
-      - name: Run basic JavaScript check
-        run: node --check script.js
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Type check TypeScript
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report-${{ matrix.node-version }}
+          path: playwright-report/
+          retention-days: 30
