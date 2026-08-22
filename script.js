@@ -51,4 +51,12 @@ addButton.addEventListener("click", () => {
   taskList.appendChild(task);
 
   taskInput.value = "";
+
+  const clearButton = document.getElementById("clearButton");
+
+  clearButton.addEventListener("click", () => {
+    taskList.innerHTML = "";
+    completedTasks = 0;
+    updateCounter();
+  });
 });
