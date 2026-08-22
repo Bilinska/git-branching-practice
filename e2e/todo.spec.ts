@@ -1,9 +1,11 @@
 import { test, expect } from '@playwright/test';
+import { ToDoPage } from './pages/ToDo';
 
 test.describe('To-Do Application', () => {
   // Run before each test
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    const toDoPage = new ToDoPage(page);
+    await toDoPage.navigate();
   });
 
   // Test 1: Page loads with correct title
@@ -16,7 +18,9 @@ test.describe('To-Do Application', () => {
   test('should display initial state correctly', async ({ page }) => {
     await expect(page.locator('#taskInput')).toBeVisible();
     await expect(page.locator('#addButton')).toBeVisible();
-    await expect(page.locator('#taskList')).toBeVisible();
+    await expect(page.locator('#taskList')).toBeEmpty();
+    await expect(page.locator('#counter')).toBeVisible();
+    await expect(page.locator('#clearButton')).toBeVisible();
     await expect(page.locator('#counter')).toHaveText('0');
   });
 
@@ -27,6 +31,8 @@ test.describe('To-Do Application', () => {
 
     await input.fill('Buy groceries');
     await button.click();
+
+    await expect(page.locator('#taskList')).toBeVisible();
 
     const taskItem = page.locator('li').first();
     await expect(taskItem).toContainText('Buy groceries');
@@ -238,5 +244,25 @@ test.describe('To-Do Application', () => {
     const input = page.locator('#taskInput');
     const placeholder = await input.getAttribute('placeholder');
     expect(placeholder).toBe('Enter a task');
+  });
+
+  // Test 16: Clear all tasks
+  test('should clear all tasks when clear button is clicked', async ({ page }) => {
+    const input = page.locator('#taskInput');
+    const button = page.locator('#addButton');
+    const clearButton = page.locator('#clearButton');
+
+    // Add 3 tasks
+    for (let i = 1; i <= 3; i++) {
+      await input.fill(`Task ${i}`);
+      await button.click();
+    }
+
+    // Clear all tasks
+    await clearButton.click();
+
+    // Verify all tasks are removed
+    const taskCount = await page.locator('li').count();
+    expect(taskCount).toBe(0);
   });
 });
