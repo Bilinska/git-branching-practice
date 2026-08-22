@@ -52,4 +52,3 @@ addButton.addEventListener("click", () => {
 
   taskInput.value = "";
 });
-THIS IS NOT VALID JAVASCRIPT
