@@ -4,7 +4,7 @@ const taskList = document.getElementById("taskList");
 const counter = document.getElementById("counter");
 
 let completedTasks = 0;
-
+// Adding comments as a part of training to explain the code
 function updateCounter() {
   counter.textContent = completedTasks;
 }
