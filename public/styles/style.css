@@ -64,7 +64,7 @@ h1 {
 }
 
 #addButton:hover {
-  background: #4e5fc2;
+  background: #5568d3;
 }
 
 #addButton:active {
@@ -73,8 +73,8 @@ h1 {
 
 #clearButton {
   padding: 12px 20px;
-  background: #e5e8f3;
-  color: rgb(173, 171, 171);
+  background: #dadbe2;
+  color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -84,7 +84,7 @@ h1 {
 }
 
 #clearButton:hover {
-  background: #d1d3dd;
+  background: #cfd0d6;
 }
 
 #clearButton:active {
