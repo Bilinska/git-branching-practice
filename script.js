@@ -16,7 +16,14 @@ addButton.addEventListener("click", () => {
             <input type="checkbox">
             ${taskText}
         </label>
+        <button class="remove-button">Remove</button>
     `;
+
+  const removeButton = task.querySelector(".remove-button");
+
+  removeButton.addEventListener("click", () => {
+    task.remove();
+  });
 
   taskList.appendChild(task);
 
